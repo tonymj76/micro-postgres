@@ -8,6 +8,8 @@
 // sources:
 //  datastore/migrations/000001_create_users.down.sql
 //  datastore/migrations/000001_create_users.up.sql
+//  datastore/migrations/000002_create_users.down.sql
+//  datastore/migrations/000002_create_users.up.sql
 
 package migrations
 
@@ -87,6 +89,22 @@ var _bindata = map[string]*asset{
 		size: 274,
 		mode: 0666,
 		time: time.Unix(1589140227, 716760500),
+	},
+	"datastore/migrations/000002_create_users.down.sql": &asset{
+		name: "000002_create_users.down.sql",
+		data: "" +
+			"\x01\x00\x00\xff\xff",
+		size: 0,
+		mode: 0666,
+		time: time.Unix(1589402662, 592874700),
+	},
+	"datastore/migrations/000002_create_users.up.sql": &asset{
+		name: "000002_create_users.up.sql",
+		data: "" +
+			"\x01\x00\x00\xff\xff",
+		size: 0,
+		mode: 0666,
+		time: time.Unix(1589402662, 591873700),
 	},
 }
 
@@ -213,6 +231,8 @@ var _bintree = bintree{
 		"migrations": bintree{
 			"000001_create_users.down.sql": bintree{},
 			"000001_create_users.up.sql":   bintree{},
+			"000002_create_users.down.sql": bintree{},
+			"000002_create_users.up.sql":   bintree{},
 		},
 	},
 }
