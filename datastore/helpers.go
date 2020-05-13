@@ -39,19 +39,18 @@ func validateSchema(db *sql.DB) error {
 	return sourceInstance.Close()
 }
 
-//ScanUser _
-func ScanUser(row squirrel.RowScanner) (*pbUser.User, error) {
+func scanUser(row squirrel.RowScanner) (*pbUser.User, error) {
 	user := pbUser.User{}
 	user.CreatedAt = new(timestamppb.Timestamp)
 	err := row.Scan(
 		&user.Id,
 		(*timeWrapper)(user.CreatedAt),
-		(rowWrapper)(user.Role),
+		(roleWrapper)(user.Role),
 	)
 
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, pbError.BadRequest("404", "no user found", err)
+			return nil, pbError.BadRequest("404", "no user found", err.Error())
 		}
 		return nil, err
 	}
