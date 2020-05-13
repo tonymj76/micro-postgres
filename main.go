@@ -26,6 +26,7 @@ func main() {
 		FullTimestamp:   true,
 	}
 	conn, err := datastore.NewConnection(log)
+	defer conn.Close()
 	log.WithError(err).Fatal("database faild to connect")
 	// Register Handler
 	pbUser.RegisterUserServiceHandler(service.Server(), &handler.Service{R: conn})

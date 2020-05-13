@@ -1,2 +1,2 @@
 database:
-  source: "postgres://postgres:@localhost:5432/usermicro?sslmode=disable"
+  source: "postgres://postgres:password2@localhost:5432/usermicro?sslmode=disable"

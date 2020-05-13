@@ -51,6 +51,6 @@ func NewConnection(logger *logrus.Logger) (*Connection, error) {
 }
 
 //Close connection
-func (c Connection) Close() error {
+func (c *Connection) Close() error {
 	return c.DB.Close()
 }
