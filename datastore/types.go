@@ -21,7 +21,7 @@ func (rw roleWrapper) Value() (driver.Value, error) {
 	case user.Role_GUEST:
 		return "guest", nil
 	case user.Role_MEMBER:
-		return "memeber", nil
+		return "member", nil
 	default:
 		return nil, fmt.Errorf("invalid Role: %q", rw)
 	}
@@ -36,7 +36,7 @@ func (rw *roleWrapper) Scan(in interface{}) error {
 	case "guest":
 		*rw = roleWrapper(user.Role_GUEST)
 		return nil
-	case "memeber":
+	case "member":
 		*rw = roleWrapper(user.Role_MEMBER)
 		return nil
 	default:
