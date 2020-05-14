@@ -24,7 +24,7 @@ func (c *Connection) Create(ctx context.Context, u *pbUser.AddUserRequest) (*pbU
 	).SetMap(map[string]interface{}{
 		"role": (roleWrapper)(u.GetRole()),
 	}).Suffix(
-		"RETURNING id, role, create_time",
+		"RETURNING id, role, created_at",
 	)
 
 	return scanUser(q.QueryRowContext(ctx))
@@ -35,7 +35,7 @@ func (c *Connection) Delete(ctx context.Context, user *pbUser.DeleteUserRequest)
 	dq, args, err := c.SB.Delete(
 		"users",
 	).Where(squirrel.Eq{"id": user.GetId()}).Suffix(
-		"RETURNING id, role, create_time",
+		"RETURNING id, role, created_at",
 	).ToSql()
 	if err != nil {
 		return nil, err
@@ -53,7 +53,7 @@ func (c *Connection) List(ctx context.Context, req *pbUser.ListUsersRequest, str
 	).From(
 		"users",
 	).OrderBy(
-		"crated_at ASC",
+		"created_at ASC",
 	)
 	if req.GetCreatedSince() != nil {
 		q = q.Where(squirrel.Gt{
