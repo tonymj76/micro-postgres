@@ -1,3 +1,4 @@
 
 user-service
 .env
+config/config.yaml
