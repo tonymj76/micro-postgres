@@ -15,7 +15,6 @@ require (
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/micro/go-micro/v2 v2.6.0
 	github.com/sirupsen/logrus v1.6.0
-	github.com/tmthrgd/go-bindata v0.0.0-20190904063317-a4b65675e0fb
 	golang.org/x/lint v0.0.0-20200130185559-910be7a94367 // indirect
 	golang.org/x/mod v0.2.0 // indirect
 	golang.org/x/tools v0.0.0-20200213224642-88e652f7a869 // indirect
