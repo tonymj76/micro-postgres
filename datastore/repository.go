@@ -19,6 +19,7 @@ type UserRepo interface {
 
 //Create _
 func (c *Connection) Create(ctx context.Context, u *pbUser.AddUserRequest) (*pbUser.User, error) {
+	c.Logger.Info("inserting data to db ", u)
 	q := c.SB.Insert(
 		"users",
 	).SetMap(map[string]interface{}{
@@ -26,7 +27,7 @@ func (c *Connection) Create(ctx context.Context, u *pbUser.AddUserRequest) (*pbU
 	}).Suffix(
 		"RETURNING id, role, created_at",
 	)
-
+	c.Logger.Info("success create of user")
 	return scanUser(q.QueryRowContext(ctx))
 }
 
@@ -40,8 +41,7 @@ func (c *Connection) Delete(ctx context.Context, user *pbUser.DeleteUserRequest)
 	if err != nil {
 		return nil, err
 	}
-	u, err := scanUser(c.DB.QueryRowContext(ctx, dq, args...))
-	return u, err
+	return scanUser(c.DB.QueryRowContext(ctx, dq, args...))
 }
 
 //List _
