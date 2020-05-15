@@ -10,6 +10,7 @@ import (
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
 	"github.com/golang/protobuf/ptypes/timestamp"
 	pbError "github.com/micro/go-micro/v2/errors"
+	"github.com/sirupsen/logrus"
 	"github.com/tonymj76/micro-postgres/datastore/migrations"
 	pbUser "github.com/tonymj76/micro-postgres/proto/user"
 )
@@ -44,8 +45,8 @@ func scanUser(row squirrel.RowScanner) (*pbUser.User, error) {
 	user.CreatedAt = new(timestamp.Timestamp)
 	err := row.Scan(
 		&user.Id,
-		(*timeWrapper)(user.CreatedAt),
 		(*roleWrapper)(&user.Role),
+		(*timeWrapper)(user.CreatedAt),
 	)
 
 	if err != nil {
@@ -54,5 +55,10 @@ func scanUser(row squirrel.RowScanner) (*pbUser.User, error) {
 		}
 		return nil, err
 	}
+	logrus.WithFields(logrus.Fields{
+		"ID":      user.Id,
+		"role":    user.GetRole(),
+		"created": user.CreatedAt,
+	}).Info("scaning into response")
 	return &user, nil
 }
