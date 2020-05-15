@@ -7,7 +7,7 @@ import "google/protobuf/duration.proto";
 
 service UserService {
 	rpc AddUser (AddUserRequest) returns (User);
-	rpc DelectUser (DeleteUserRequest) returns (User);
+	rpc DeleteUser (DeleteUserRequest) returns (User);
 	rpc ListUsers(ListUsersRequest) returns (stream User);
 }
 
