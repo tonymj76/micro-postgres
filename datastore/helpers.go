@@ -8,10 +8,10 @@ import (
 	migrate "github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
+	"github.com/golang/protobuf/ptypes/timestamp"
 	pbError "github.com/micro/go-micro/v2/errors"
 	"github.com/tonymj76/micro-postgres/datastore/migrations"
 	pbUser "github.com/tonymj76/micro-postgres/proto/user"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // version defines the current migration version. This ensures the app
@@ -41,11 +41,11 @@ func validateSchema(db *sql.DB) error {
 
 func scanUser(row squirrel.RowScanner) (*pbUser.User, error) {
 	user := pbUser.User{}
-	user.CreatedAt = new(timestamppb.Timestamp)
+	user.CreatedAt = new(timestamp.Timestamp)
 	err := row.Scan(
 		&user.Id,
 		(*timeWrapper)(user.CreatedAt),
-		(roleWrapper)(user.Role),
+		(*roleWrapper)(&user.Role),
 	)
 
 	if err != nil {
