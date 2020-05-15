@@ -5,6 +5,7 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	"github.com/micro/go-micro/v2/errors"
+	"github.com/sirupsen/logrus"
 	pbUser "github.com/tonymj76/micro-postgres/proto/user"
 )
 
@@ -14,7 +15,7 @@ type pbUsers []*pbUser.User
 type UserRepo interface {
 	Create(context.Context, *pbUser.AddUserRequest) (*pbUser.User, error)
 	Delete(context.Context, *pbUser.DeleteUserRequest) (*pbUser.User, error)
-	List(context.Context, *pbUser.ListUsersRequest, pbUser.UserService_ListUsersStream) error
+	List(*pbUser.ListUsersRequest, pbUser.UserService_ListUsersStream) error
 }
 
 //Create _
@@ -45,7 +46,7 @@ func (c *Connection) Delete(ctx context.Context, user *pbUser.DeleteUserRequest)
 }
 
 //List _
-func (c *Connection) List(ctx context.Context, req *pbUser.ListUsersRequest, stream pbUser.UserService_ListUsersStream) error {
+func (c *Connection) List(req *pbUser.ListUsersRequest, stream pbUser.UserService_ListUsersStream) error {
 	q := c.SB.Select(
 		"id",
 		"role",
@@ -67,7 +68,7 @@ func (c *Connection) List(ctx context.Context, req *pbUser.ListUsersRequest, str
 			),
 		)
 	}
-	rows, err := q.QueryContext(ctx)
+	rows, err := q.QueryContext(stream.Context())
 	if err != nil {
 		return err
 	}
@@ -84,10 +85,20 @@ func (c *Connection) List(ctx context.Context, req *pbUser.ListUsersRequest, str
 		if err != nil {
 			return errors.InternalServerError("501", "service.user.List", err)
 		}
-		err = stream.Send(user)
+		err = stream.Send(&pbUser.User{
+			Id:        user.Id,
+			Role:      user.Role,
+			CreatedAt: user.CreatedAt,
+		})
+		logrus.Info("GETTING STREAM ERRORS: ", err)
 		if err != nil {
 			return errors.InternalServerError("501", "service.user.List", err)
 		}
+		c.Logger.WithFields(logrus.Fields{
+			"ID":      user.Id,
+			"role":    user.GetRole(),
+			"created": user.CreatedAt,
+		}).Info("scaning into Stream")
 	}
 	return nil
 }
