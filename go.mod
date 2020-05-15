@@ -10,7 +10,7 @@ require (
 	github.com/golang/protobuf v1.4.0
 	github.com/gorilla/mux v1.7.4 // indirect
 	github.com/hashicorp/go-multierror v1.1.0 // indirect
-	github.com/jackc/pgtype v1.3.0
+	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.6.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/micro/go-micro/v2 v2.6.0
