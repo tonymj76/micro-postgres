@@ -45,7 +45,7 @@ func NewUserServiceEndpoints() []*api.Endpoint {
 
 type UserService interface {
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...client.CallOption) (*User, error)
-	DelectUser(ctx context.Context, in *DeleteUserRequest, opts ...client.CallOption) (*User, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...client.CallOption) (*User, error)
 	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...client.CallOption) (UserService_ListUsersService, error)
 }
 
@@ -71,8 +71,8 @@ func (c *userService) AddUser(ctx context.Context, in *AddUserRequest, opts ...c
 	return out, nil
 }
 
-func (c *userService) DelectUser(ctx context.Context, in *DeleteUserRequest, opts ...client.CallOption) (*User, error) {
-	req := c.c.NewRequest(c.name, "UserService.DelectUser", in)
+func (c *userService) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...client.CallOption) (*User, error) {
+	req := c.c.NewRequest(c.name, "UserService.DeleteUser", in)
 	out := new(User)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
@@ -134,14 +134,14 @@ func (x *userServiceListUsers) Recv() (*User, error) {
 
 type UserServiceHandler interface {
 	AddUser(context.Context, *AddUserRequest, *User) error
-	DelectUser(context.Context, *DeleteUserRequest, *User) error
+	DeleteUser(context.Context, *DeleteUserRequest, *User) error
 	ListUsers(context.Context, *ListUsersRequest, UserService_ListUsersStream) error
 }
 
 func RegisterUserServiceHandler(s server.Server, hdlr UserServiceHandler, opts ...server.HandlerOption) error {
 	type userService interface {
 		AddUser(ctx context.Context, in *AddUserRequest, out *User) error
-		DelectUser(ctx context.Context, in *DeleteUserRequest, out *User) error
+		DeleteUser(ctx context.Context, in *DeleteUserRequest, out *User) error
 		ListUsers(ctx context.Context, stream server.Stream) error
 	}
 	type UserService struct {
@@ -159,8 +159,8 @@ func (h *userServiceHandler) AddUser(ctx context.Context, in *AddUserRequest, ou
 	return h.UserServiceHandler.AddUser(ctx, in, out)
 }
 
-func (h *userServiceHandler) DelectUser(ctx context.Context, in *DeleteUserRequest, out *User) error {
-	return h.UserServiceHandler.DelectUser(ctx, in, out)
+func (h *userServiceHandler) DeleteUser(ctx context.Context, in *DeleteUserRequest, out *User) error {
+	return h.UserServiceHandler.DeleteUser(ctx, in, out)
 }
 
 func (h *userServiceHandler) ListUsers(ctx context.Context, stream server.Stream) error {
