@@ -7,7 +7,7 @@ import (
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/duration"
 	"github.com/golang/protobuf/ptypes/timestamp"
-	"github.com/jackc/pgtype"
+	"github.com/jackc/pgx/pgtype"
 	"github.com/tonymj76/micro-postgres/proto/user"
 )
 
