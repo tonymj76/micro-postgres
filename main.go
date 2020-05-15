@@ -1,12 +1,11 @@
 package main
 
 import (
-	"time"
-
 	"github.com/micro/go-micro/v2"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/tonymj76/micro-postgres/datastore"
 	"github.com/tonymj76/micro-postgres/handler"
+	_ "github.com/tonymj76/micro-postgres/log"
 	pbUser "github.com/tonymj76/micro-postgres/proto/user"
 )
 
@@ -16,18 +15,11 @@ func main() {
 		micro.Name("service.user"),
 		micro.Version("0.1"),
 	)
-
 	// Initialise service
 	service.Init()
-
-	log := logrus.New()
-	log.Formatter = &logrus.TextFormatter{
-		TimestampFormat: time.StampMilli,
-		FullTimestamp:   true,
-	}
-	conn, err := datastore.NewConnection(log)
+	conn, err := datastore.NewConnection(log.New())
 	if err != nil {
-		log.WithError(err).Fatal("database faild to connect")
+		log.WithError(err).Fatal("database failed to connect")
 	}
 	defer conn.Close()
 	// Register Handler
@@ -38,6 +30,6 @@ func main() {
 
 	// Run service
 	if err := service.Run(); err != nil {
-		log.Fatal(err)
+		log.WithError(err).Fatal("unable to run serive")
 	}
 }
