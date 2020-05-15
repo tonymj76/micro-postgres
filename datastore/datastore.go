@@ -2,7 +2,6 @@ package datastore
 
 import (
 	"database/sql"
-	"log"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/jackc/pgx/v4"
@@ -22,7 +21,7 @@ type Connection struct {
 func loadConfig() string {
 	err := config.LoadFile("config/config.yaml")
 	if err != nil {
-		log.Fatal(err)
+		logrus.WithField("loadConfig", err.Error())
 	}
 	src := config.Map()
 	conf := src["database"].(map[string]interface{})["source"].(string)
